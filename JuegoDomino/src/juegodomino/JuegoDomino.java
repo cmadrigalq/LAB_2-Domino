@@ -5,6 +5,8 @@
  */
 package juegodomino;
 
+import juegodomino.Vista.DominoVista;
+
 /**
  *
  * @author Cynthia Madrigal
@@ -17,6 +19,8 @@ public class JuegoDomino {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        DominoVista dv = new DominoVista();
+        dv.setVisible(true);
     }
     
 }
