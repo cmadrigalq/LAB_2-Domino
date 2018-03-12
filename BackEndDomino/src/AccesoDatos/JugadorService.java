@@ -2,6 +2,7 @@ package AccesoDatos;
 
 import Modelo.Ficha;
 import Modelo.Ficha.Punto;
+import Modelo.Jugador;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,35 +11,29 @@ import java.util.Collection;
 import java.util.List;
 import oracle.jdbc.internal.OracleTypes;
 
-public class FichaService extends Servicio {
+public class JugadorService extends Servicio {
 
-    private static final String insertaFicha = "{call insertar_ficha(?,?,?,?)}";
-    private static final String listarFichas = "{?=call listar_ficha()}";
+    private static final String insertaJugador = "{call insertar_jugador(?,?)}";
+    private static final String listarJugador = "{?=call listar_jugador()}";
 
-    public FichaService() {
+    public JugadorService() {
     }
 
-    public List<Ficha> listarFicha() throws GlobalException, NoDataException {
+    public List<Jugador> listarJugador() throws GlobalException, NoDataException {
         conectar();
         ResultSet rs = null;
-        List<Ficha> coleccion = new ArrayList();
-        Ficha ficha = null;
+        List<Jugador> coleccion = new ArrayList();
+        Jugador jugador = null;
         CallableStatement pstmt = null;
         boolean imp = false;
         try {
-            pstmt = conexion.prepareCall(listarFichas);
+            pstmt = conexion.prepareCall(listarJugador);
             pstmt.registerOutParameter(1, OracleTypes.CURSOR);
             pstmt.execute();
             rs = (ResultSet) pstmt.getObject(1);
             while (rs.next()) {
-                if (rs.getString("derecha").equals("S")) {
-                    imp = true;
-                }
-                int id = rs.getInt("id_ficha");
-                ficha = new Ficha(id,
-                        Punto.values()[rs.getInt("valor1")], Punto.values()[rs.getInt("valor2")],
-                        imp);
-                coleccion.add(ficha);
+                jugador = new Jugador(rs.getString("id_jugador"),rs.getInt("partidasGanadas"));
+                coleccion.add(jugador);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,19 +58,13 @@ public class FichaService extends Servicio {
         return coleccion;
     }
 
-    public void insertarFicha(Ficha ficha) throws GlobalException, NoDataException {
+    public void insertarJugador(Jugador jugador) throws GlobalException, NoDataException {
         conectar();
         CallableStatement pstmt = null;
         try {
-            pstmt = conexion.prepareCall(insertaFicha);
-            pstmt.setInt(1, ficha.getId_ficha());
-            pstmt.setInt(2, ficha.getValor1().getIntValue());
-            pstmt.setInt(3, ficha.getValor2().getIntValue());
-            if (ficha.fueVolteada()) {
-                pstmt.setString(4, "S");
-            } else {
-                pstmt.setString(4, "N");
-            }
+            pstmt = conexion.prepareCall(insertaJugador);
+            pstmt.setString(1, jugador.getNombre());
+            pstmt.setInt(2, jugador.getPartidasGanadas());
             boolean resultado = pstmt.execute();
             if (resultado == true) {
                 throw new NoDataException("No se realizo la inserción");

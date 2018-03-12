@@ -24,6 +24,7 @@ public class Ficha implements Serializable {
             return Integer.valueOf(representacion);
         }
     }
+    int id_ficha;
     Punto valor1;
     Punto valor2;
     Boolean noVolteada;
@@ -33,7 +34,22 @@ public class Ficha implements Serializable {
         this.valor2 = valor2;
         noVolteada = null;
     }
+    
+    public Ficha(int id_ficha, Punto valor1, Punto valor2, boolean derecha){
+        this.id_ficha = id_ficha;
+        this.valor1 = valor1;
+        this.valor2 = valor2;
+        this.noVolteada = derecha;
+    }
     //<<<>>><<<>>>SET y GET<<<>>><<<>>>
+
+    public int getId_ficha() {
+        return id_ficha;
+    }
+
+    public void setId_ficha(int id_ficha) {
+        this.id_ficha = id_ficha;
+    }
 
     public Boolean fueVolteada() {
         return noVolteada;

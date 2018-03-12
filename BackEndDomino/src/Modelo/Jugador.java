@@ -25,6 +25,12 @@ public class Jugador implements Serializable {
         fichas = new ArrayList<>();
         init();
     }
+    
+    public Jugador(String nombre, int partidasGanadas){
+        this.nombre = nombre;
+        this.partidasGanadas = partidasGanadas;
+        this.domino = null;
+    }
 
     public Jugador(String nombre, int partidasGanadas, List<Ficha> fichas, Domino domino) {
         this.nombre = nombre;
