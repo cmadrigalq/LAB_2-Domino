@@ -40,7 +40,6 @@ public class Jugador implements Serializable{
         return fichas.remove(f);
     }
     
-    
     final void init(){
         for(int i = 0;i<7;i++)
             fichas.add(domino.sacarFicha());

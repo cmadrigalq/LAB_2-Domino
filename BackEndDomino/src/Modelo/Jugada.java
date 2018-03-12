@@ -11,16 +11,16 @@ import java.io.Serializable;
  */
 public class Jugada implements Serializable{
     Jugador quien;
-    boolean derecha;
     Ficha cual;
     int numeroDeJuego;
+    boolean derecha;
     int secuencia;
 
-    public Jugada(Jugador quien, boolean derecha, Ficha cual, int numeroDeJuego, int secuencia) {
+    public Jugada(Jugador quien, Ficha cual, int numeroDeJuego, boolean derecha, int secuencia) {
         this.quien = quien;
-        this.derecha = derecha;
         this.cual = cual;
         this.numeroDeJuego = numeroDeJuego;
+        this.derecha = derecha;
         this.secuencia = secuencia;
     }
 
