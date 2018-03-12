@@ -30,7 +30,7 @@ public class Domino implements Serializable{
     }
     
     public Ficha sacarFicha(){
-        int rand = ((int)Math.random())%fichas.size();
+        int rand = (int)(Math.random()*fichas.size());
         return fichas.remove(rand);
     }
 

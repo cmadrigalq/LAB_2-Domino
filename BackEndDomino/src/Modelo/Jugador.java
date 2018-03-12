@@ -74,7 +74,7 @@ public class Jugador implements Serializable {
     public String mostrarFichas() {
         String res = "";
         for (Ficha f : this.getFichas()) {
-            res += f.toString();
+            res += (f.toString()+"   ");
         }
         return res;
     }

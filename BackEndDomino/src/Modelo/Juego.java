@@ -12,13 +12,13 @@ import java.util.List;
  * @date 09/03/2018
  */
 public abstract class Juego {
-    int numeroDeJuego;
-    List<Jugador>jugadores;
-    int jugadorActual;
-    List<Jugada>jugadas;
-    Punto derecha;
-    Punto izquierda;
-    Domino domino;
+    protected int numeroDeJuego;
+    protected List<Jugador>jugadores;
+    protected int jugadorActual;
+    protected List<Jugada>jugadas;
+    protected Punto derecha;
+    protected Punto izquierda;
+    protected Domino domino;
     
     
     public abstract Jugada esperarJugada();
@@ -46,12 +46,21 @@ public abstract class Juego {
     public void iniciar(){
         do{
             Jugada jugada = esperarJugada();
+            if(jugada == null){
+                siguienteJugador();
+                continue;
+            }
             if(realizarJugada(jugada.isDerecha(), jugada.getCual())){
                 jugada.guardaJugada();
-                ++this.jugadorActual;
-                this.jugadorActual %= this.jugadores.size();//actual = actual % size
+                jugadas.add(jugada);
+                siguienteJugador();
             }            
         }while(!hayGanador() &&aunHayJugadas());
+    }
+    
+    void siguienteJugador(){
+        ++this.jugadorActual;
+        this.jugadorActual %= this.jugadores.size();//actual = actual % size
     }
     
     final void init() {
@@ -70,26 +79,31 @@ public abstract class Juego {
 
     public boolean ponerFicha(Ficha f, boolean isDerecha){
         if(this.derecha == null && izquierda == null){
-            derecha = f.getValor1();
-            izquierda = f.getValor2();
+            derecha = f.getValor2();
+            izquierda = f.getValor1();
+            f.voltear(false);
             return true;
         }
         if(isDerecha){
             if(derecha == f.getValor1()){
                 derecha = f.getValor2();
+                f.voltear(false);
                 return true;
             }
             if(derecha == f.getValor2()){
                 derecha = f.getValor1();
+                f.voltear(true);
                 return true;
             }
         }else{
             if(izquierda == f.getValor1()){
                 izquierda = f.getValor2();
+                f.voltear(true);
                 return true;
             }
             if(izquierda == f.getValor2()){
                 izquierda = f.getValor1();
+                f.voltear(false);
                 return true;
             }
         }
@@ -149,6 +163,21 @@ public abstract class Juego {
     
     public boolean hayGanador(){
         return jugadores.get(getJugadorActual()).gano();
+    }
+    @Override
+    public String toString(){
+        String r = "";
+        if(getJugadas().isEmpty()){
+            r+= "AUN NO SE HAN REALIZADO JUGADAS";
+        }
+        for(Jugada j : this.getJugadas()){
+            if(j.isDerecha()){
+                r+= j.getCual().toString();
+            }else{
+                r = j.getCual().toString() + r;
+            }
+        }
+        return "\n\tTablero Actual\n"+r+"\n\n";
     }
     
     

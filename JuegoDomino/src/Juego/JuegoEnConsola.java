@@ -26,19 +26,29 @@ public class JuegoEnConsola extends Juego{
     @Override
     public Jugada esperarJugada() {
         System.err.println("TURNO DE " + getActual().getNombre());
-        System.out.println(toString());
-        System.out.println(getActual().mostrarFichas());
-        boolean isDerecha = preguntarDonde();
+        System.out.println(super.toString());
+        Boolean isDerecha = preguntarDonde();
+        if(isDerecha == null){
+            return null;
+        }
         Ficha f = getActual().getFichas().get(this.preguntarCualFicha(getActual()));
         Jugada jugada = new Jugada(getActual(),f,getNumeroDeJuego(),isDerecha,secuencia+1);
         return jugada;
     }
 
-    boolean preguntarDonde() {
+    Boolean preguntarDonde() {
         while (true) {
-            System.out.println("Desea Jugar a l Izquierda (I) o a la derecha (D)");
+            System.out.println(getActual().mostrarFichas());
+            System.out.println("Desea Jugar a l Izquierda (I) o a la derecha (D), (C) para comer, S para saltar turno");
             String a = sc.nextLine();
-            if (a.equalsIgnoreCase("I") || a.equalsIgnoreCase("D")) {
+            if (a.equalsIgnoreCase("I") || a.equalsIgnoreCase("D") || a.equalsIgnoreCase("C")|| a.equalsIgnoreCase("S")) {
+                if(a.equalsIgnoreCase("S") ||(a.equalsIgnoreCase("C")&&domino.getFichas().isEmpty())){
+                    return null;
+                }
+                if(a.equalsIgnoreCase("C")){
+                    getActual().getFichas().add(domino.sacarFicha());
+                    continue;
+                }
                 return a.equalsIgnoreCase("D");
             }
             System.err.println("Debe ingresar una I para izquierda, o una D para derecha");

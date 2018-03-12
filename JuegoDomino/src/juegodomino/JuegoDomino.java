@@ -5,7 +5,10 @@
  */
 package juegodomino;
 
-import juegodomino.Vista.DominoVista;
+import Juego.JuegoEnConsola;
+import Modelo.Juego;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -18,8 +21,14 @@ public class JuegoDomino {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        DominoVista dv = new DominoVista();
-        dv.setVisible(true);
+       // DominoVista dv = new DominoVista();
+       // dv.setVisible(true);
+        String j1 = "Cyn",j2 = "Dani";
+        List<String>jugadores = new ArrayList<>();
+        jugadores.add(j1);
+        jugadores.add(j2);
+        Juego juego = new JuegoEnConsola(jugadores);
+        juego.iniciar();
     }
     
 }

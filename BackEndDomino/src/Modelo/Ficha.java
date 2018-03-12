@@ -19,27 +19,28 @@ public class Ficha implements Serializable {
         private Punto(String representacion) {
             this.representacion = representacion;
         }
+        
         public Integer getIntValue(){
             return Integer.valueOf(representacion);
         }
     }
     Punto valor1;
     Punto valor2;
-    Boolean derecha;
+    Boolean noVolteada;
     //<<<>>><<<>>>Constructores<<<>>><<<>>>
     public Ficha(Punto valor1, Punto valor2) {
         this.valor1 = valor1;
         this.valor2 = valor2;
-        derecha = null;
+        noVolteada = null;
     }
     //<<<>>><<<>>>SET y GET<<<>>><<<>>>
 
-    public Boolean getDerecha() {
-        return derecha;
+    public Boolean fueVolteada() {
+        return noVolteada;
     }
 
-    public void setDerecha(Boolean derecha) {
-        this.derecha = derecha;
+    public void voltear(Boolean derecha) {
+        this.noVolteada = derecha;
     }
 
     public Punto getValor1() {
@@ -51,10 +52,10 @@ public class Ficha implements Serializable {
     }
     @Override
     public String toString(){
-        if(derecha){
-            return valor1.representacion + "|" + valor2.representacion;
+        if(noVolteada == null || !noVolteada){
+            return "["+valor1.representacion + "|" + valor2.representacion+"]";
         }
-        return valor2.representacion + "|" + valor1.representacion;
+        return "["+valor2.representacion + "|" + valor1.representacion+"]";
     }
 
 
