@@ -19,6 +19,9 @@ public class Ficha implements Serializable {
         private Punto(String representacion) {
             this.representacion = representacion;
         }
+        public Integer getIntValue(){
+            return Integer.valueOf(representacion);
+        }
     }
     Punto valor1;
     Punto valor2;

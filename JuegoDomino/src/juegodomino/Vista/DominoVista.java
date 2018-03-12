@@ -6,7 +6,6 @@
 package juegodomino.Vista;
 
 import java.awt.MouseInfo;
-import java.awt.event.MouseEvent;
 
 /**
  *

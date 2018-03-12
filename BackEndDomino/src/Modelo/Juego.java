@@ -11,7 +11,7 @@ import java.util.List;
  * @author Cynthia Madrigal Quesada
  * @date 09/03/2018
  */
-public class Juego {
+public abstract class Juego {
     int numeroDeJuego;
     List<Jugador>jugadores;
     int jugadorActual;
@@ -19,7 +19,17 @@ public class Juego {
     Punto derecha;
     Punto izquierda;
     Domino domino;
-    Partida partida;
+    
+    
+    public abstract Jugada esperarJugada();
+    public boolean realizarJugada(boolean derecha,Ficha f){
+        Jugador j = getActual();
+        if(ponerFicha(f, derecha)){
+            j.ponerFicha(f);
+            return true;
+        }
+        return false;
+    }
     public Juego(List<String>nicks){
         this.jugadores = new ArrayList<>();
         jugadas = new ArrayList<>();
@@ -35,13 +45,13 @@ public class Juego {
     
     public void iniciar(){
         do{
-            Jugada jugada = partida.esperarJugada(this.getJugadores().get(this.jugadorActual));
-            if(partida.realizarJugada(jugada.isDerecha(), jugada.getCual())){
+            Jugada jugada = esperarJugada();
+            if(realizarJugada(jugada.isDerecha(), jugada.getCual())){
                 jugada.guardaJugada();
                 ++this.jugadorActual;
                 this.jugadorActual %= this.jugadores.size();//actual = actual % size
             }            
-        }while(!partida.hayGanador() && partida.aunHayJugadas());
+        }while(!hayGanador() &&aunHayJugadas());
     }
     
     final void init() {
@@ -86,9 +96,6 @@ public class Juego {
         return false;
     }
     
-    public void setPartida(Partida partida) {
-        this.partida = partida;
-    }
 
     public int getNumeroDeJuego() {
         return numeroDeJuego;
@@ -122,11 +129,27 @@ public class Juego {
         return domino;
     }
 
-    public Partida getPartida() {
-        return partida;
+
+    public boolean aunHayJugadas() {
+        if (!this.getDomino().getFichas().isEmpty()) {
+            return true;
+        }
+        for (Jugador j : this.getJugadores()) {
+            for (Ficha f : j.getFichas()) {
+                if (f.getValor1() == this.getDerecha()
+                        || f.getValor1() == this.getIzquierda()
+                        || f.getValor2() == this.getDerecha()
+                        || f.getValor2() == this.getIzquierda()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
-
+    public boolean hayGanador(){
+        return jugadores.get(getJugadorActual()).gano();
+    }
     
     
 }

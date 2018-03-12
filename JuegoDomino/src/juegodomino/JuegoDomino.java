@@ -18,7 +18,6 @@ public class JuegoDomino {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         DominoVista dv = new DominoVista();
         dv.setVisible(true);
     }
