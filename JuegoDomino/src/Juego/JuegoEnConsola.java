@@ -1,9 +1,12 @@
 package Juego;
 
+import Modelo.Domino;
 import Modelo.Ficha;
 import Modelo.Juego;
 import Modelo.Jugada;
 import Modelo.Jugador;
+import Modelo.Partida;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,17 +21,39 @@ public class JuegoEnConsola extends Juego{
 
     Scanner sc;
     int secuencia = 0;
-    public JuegoEnConsola(List<String>nicks) {
-        super(nicks);
-        sc = new Scanner(System.in);
+    int idHilo;
+    public JuegoEnConsola(Partida p) {
+        super(new ArrayList());
+        this.numeroDeJuego = p.getNumeroDeJuego();
+        this.jugadores = p.getJugadores();
+        this.jugadorActual = p.getJugadorActual();
+        this.jugadas = p.getJugadas();
+        this.derecha = p.getDerecha();
+        this.izquierda = p.getIzquierda();
+        this.domino = p.getDomino();
+    }
+
+    public int getTurno() {
+        return idHilo;
+    }
+
+    public void setTurno(int turno) {
+        this.idHilo = turno;
     }
 
     @Override
     public Jugada esperarJugada() {
         System.err.println("TURNO DE " + getActual().getNombre());
         System.out.println(super.toString());
+        if(idHilo != jugadorActual){
+            return null;
+        }
+        
         Boolean isDerecha = preguntarDonde();
         if(isDerecha == null){
+            return null;
+        }
+        if(idHilo != jugadorActual){
             return null;
         }
         Ficha f = getActual().getFichas().get(this.preguntarCualFicha(getActual()));

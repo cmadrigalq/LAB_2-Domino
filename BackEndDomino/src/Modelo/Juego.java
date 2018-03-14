@@ -19,6 +19,20 @@ public abstract class Juego {
     protected Punto derecha;
     protected Punto izquierda;
     protected Domino domino;
+
+    public Juego(int numeroDeJuego, List<Jugador> jugadores, int jugadorActual, List<Jugada> jugadas, Punto derecha, Punto izquierda, Domino domino) {
+        this.numeroDeJuego = numeroDeJuego;
+        this.jugadores = jugadores;
+        this.jugadorActual = jugadorActual;
+        this.jugadas = jugadas;
+        this.derecha = derecha;
+        this.izquierda = izquierda;
+        this.domino = domino;
+    }
+
+    public Juego() {
+    }
+    
     
     
     public abstract Jugada esperarJugada();
@@ -42,21 +56,24 @@ public abstract class Juego {
             this.jugadores.add(j);
         }
     }
-    
-    public void iniciar(){
-        do{
+    public Jugada iniciar(){
+        if(!hayGanador() &&aunHayJugadas()){
             Jugada jugada = esperarJugada();
             if(jugada == null){
                 siguienteJugador();
-                continue;
             }
-            if(realizarJugada(jugada.isDerecha(), jugada.getCual())){
+            else if(realizarJugada(jugada.isDerecha(), jugada.getCual())){
                 jugada.guardaJugada();
                 jugadas.add(jugada);
                 siguienteJugador();
-            }            
-        }while(!hayGanador() &&aunHayJugadas());
+            }       
+            return jugada;
+        }
+        return null;
     }
+    
+    
+  
     
     void siguienteJugador(){
         ++this.jugadorActual;
@@ -141,6 +158,34 @@ public abstract class Juego {
 
     public Domino getDomino() {
         return domino;
+    }
+
+    public void setNumeroDeJuego(int numeroDeJuego) {
+        this.numeroDeJuego = numeroDeJuego;
+    }
+
+    public void setJugadores(List<Jugador> jugadores) {
+        this.jugadores = jugadores;
+    }
+
+    public void setJugadorActual(int jugadorActual) {
+        this.jugadorActual = jugadorActual;
+    }
+
+    public void setJugadas(List<Jugada> jugadas) {
+        this.jugadas = jugadas;
+    }
+
+    public void setDerecha(Punto derecha) {
+        this.derecha = derecha;
+    }
+
+    public void setIzquierda(Punto izquierda) {
+        this.izquierda = izquierda;
+    }
+
+    public void setDomino(Domino domino) {
+        this.domino = domino;
     }
 
 

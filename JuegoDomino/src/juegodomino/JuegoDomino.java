@@ -27,8 +27,8 @@ public class JuegoDomino {
         List<String>jugadores = new ArrayList<>();
         jugadores.add(j1);
         jugadores.add(j2);
-        Juego juego = new JuegoEnConsola(jugadores);
-        juego.iniciar();
+        //Juego juego = new JuegoEnConsola(jugadores);
+       // juego.iniciar();
     }
     
 }

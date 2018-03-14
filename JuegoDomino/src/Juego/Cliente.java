@@ -9,6 +9,9 @@ package Juego;
  *
  * @author Manuel Céspedes
  */
+import Json.Json;
+import Modelo.Jugada;
+import Modelo.Partida;
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
@@ -20,18 +23,38 @@ class Persona extends Thread {
     private int id;
     public Persona(int id) {
         this.id = id;
+        try {
+            sk = new Socket("127.0.0.1", 10578);
+            dis = new DataInputStream(sk.getInputStream());
+            dos = new DataOutputStream(sk.getOutputStream());
+            dos.writeUTF("echo");
+            dos.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(Persona.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @Override
     public void run() {
         try {
-            sk = new Socket("127.0.0.1", 10578);
-            dos = new DataOutputStream(sk.getOutputStream());
-            dis = new DataInputStream(sk.getInputStream());
-            System.out.println(id + " envía saludo");
-            dos.writeUTF("hola");
-            String respuesta="";
-            respuesta = dis.readUTF();
-            System.out.println(id + " Servidor devuelve saludo: " + respuesta);
+
+            
+            String respuesta = dis.readUTF();
+            if (respuesta.equals("echo")) {
+                return;
+            } else {
+
+                Partida p = (Partida) Json.toObject(respuesta, Partida.class);
+                JuegoEnConsola jc = new JuegoEnConsola(p);
+                jc.setTurno(id);
+                Jugada j = jc.iniciar();
+                if(p.getJugadorActual() == id){
+                    String out = Json.toJson(j);
+                    dos.writeUTF(out);
+                }else{
+                    dos.writeUTF("echo");
+                }
+            }
+            dos.flush();
             dis.close();
             dos.close();
             sk.close();
